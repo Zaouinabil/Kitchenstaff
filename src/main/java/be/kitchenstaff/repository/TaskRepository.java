@@ -20,4 +20,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByTaskDateOrderByIdDesc(LocalDate taskDate);
 
     List<Task> findAllByOrderByIdDesc();
+
+    long countByTaskDateAndStatus(LocalDate taskDate, TaskStatus status);
 }
