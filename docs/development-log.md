@@ -43,3 +43,10 @@ Il transforme les entités Task en TaskDto afin d’exposer des données propres
 Ce commit ajoute le controller REST des tâches.  
 Il expose les endpoints permettant de créer, consulter, modifier, commencer, terminer, annuler et supprimer une tâche.  
 Ces endpoints représentent le cœur métier de l’application Kitchenstaff : suivre l’avancement de la mise en place du matin.
+
+## Commit 7- Add dashboard progress endpoint
+
+Ce commit ajoute un endpoint de tableau de bord pour suivre l’avancement de la mise en place.
+Le dashboard calcule le nombre total de tâches, les tâches à faire, en cours, terminées et annulées.
+Il calcule aussi un pourcentage de progression basé sur les tâches terminées.
+Cet endpoint permet au chef d’avoir une vue rapide de l’état de la mise en place du jour.
