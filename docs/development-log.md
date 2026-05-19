@@ -50,3 +50,11 @@ Ce commit ajoute un endpoint de tableau de bord pour suivre l’avancement de la
 Le dashboard calcule le nombre total de tâches, les tâches à faire, en cours, terminées et annulées.
 Il calcule aussi un pourcentage de progression basé sur les tâches terminées.
 Cet endpoint permet au chef d’avoir une vue rapide de l’état de la mise en place du jour.
+
+## Commit 8 - Add global error handling
+
+Ce commit améliore la gestion des erreurs de l’API.
+Il ajoute une exception ResourceNotFoundException, un modèle ErrorResponse et un GlobalExceptionHandler.
+Les ressources introuvables retournent maintenant une réponse 404 claire.
+Les erreurs de validation retournent une réponse 400 avec un message compréhensible.
+Cette amélioration rend l’API plus propre à tester avec Postman.

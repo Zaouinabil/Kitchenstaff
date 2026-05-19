@@ -12,6 +12,7 @@ import be.kitchenstaff.repository.ItemRepository;
 import be.kitchenstaff.repository.TaskRepository;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import be.kitchenstaff.exception.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,7 +55,7 @@ public class TaskService {
 
     public TaskDto create(CreateTaskRequest request) {
         Item item = itemRepository.findById(request.getItemId())
-                .orElseThrow(() -> new RuntimeException("Préparation introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
 
         Task task = new Task();
         task.setItem(item);
@@ -66,7 +67,7 @@ public class TaskService {
 
         if (request.getAssignedUserId() != null) {
             User user = userRepository.findById(request.getAssignedUserId())
-                    .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
             task.setAssignedUser(user);
         }
 
@@ -134,7 +135,7 @@ public class TaskService {
 
     private Task getTaskOrThrow(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tâche introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Tâche introuvable"));
     }
 
     private TaskDto toDto(Task task) {

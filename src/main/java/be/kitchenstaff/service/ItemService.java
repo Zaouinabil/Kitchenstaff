@@ -7,6 +7,7 @@ import be.kitchenstaff.entity.Item;
 import be.kitchenstaff.repository.CategoryRepository;
 import be.kitchenstaff.repository.ItemRepository;
 import org.springframework.stereotype.Service;
+import be.kitchenstaff.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ItemService {
 
     public ItemDto create(CreateItemRequest request) {
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Catégorie introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie introuvable"));
 
         Item item = new Item();
         item.setName(request.getName());
