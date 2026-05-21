@@ -58,3 +58,9 @@ Il ajoute une exception ResourceNotFoundException, un modèle ErrorResponse et u
 Les ressources introuvables retournent maintenant une réponse 404 claire.
 Les erreurs de validation retournent une réponse 400 avec un message compréhensible.
 Cette amélioration rend l’API plus propre à tester avec Postman.
+## Commit 9- Add initial kitchen prep data
+
+Ce commit ajoute des données initiales pour faciliter les tests de l’application.
+Au démarrage, l’application crée automatiquement les catégories principales : Légumes, Sauces et Salades.
+Elle crée aussi plusieurs préparations réelles comme Tomates rondelles, Mayonnaise, Sauce tartare, Œufs cuits et Haricots cuits.
+Ces données permettent de tester plus facilement la création des tâches sans devoir tout encoder manuellement dans Postman.
