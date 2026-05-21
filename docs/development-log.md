@@ -64,3 +64,10 @@ Ce commit ajoute des données initiales pour faciliter les tests de l’applicat
 Au démarrage, l’application crée automatiquement les catégories principales : Légumes, Sauces et Salades.
 Elle crée aussi plusieurs préparations réelles comme Tomates rondelles, Mayonnaise, Sauce tartare, Œufs cuits et Haricots cuits.
 Ces données permettent de tester plus facilement la création des tâches sans devoir tout encoder manuellement dans Postman.
+
+## Commit 10- Add user REST endpoints
+
+Ce commit ajoute les premiers endpoints REST liés aux utilisateurs.
+Il permet de créer un utilisateur, de lister les utilisateurs et de consulter un utilisateur par identifiant.
+Les réponses utilisent UserDto afin de ne pas exposer le mot de passe dans l’API.
+Cette étape prépare l’assignation des tâches à un membre de l’équipe.
