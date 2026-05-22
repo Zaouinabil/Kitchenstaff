@@ -71,3 +71,8 @@ Ce commit ajoute les premiers endpoints REST liés aux utilisateurs.
 Il permet de créer un utilisateur, de lister les utilisateurs et de consulter un utilisateur par identifiant.
 Les réponses utilisent UserDto afin de ne pas exposer le mot de passe dans l’API.
 Cette étape prépare l’assignation des tâches à un membre de l’équipe.
+## Commit 11 - Add user active status endpoint
+
+Ce commit ajoute un endpoint permettant de désactiver un utilisateur.
+L’utilisateur n’est pas supprimé de la base de données, mais son champ active passe à false.
+Cette approche permet de conserver l’historique des tâches liées à cet utilisateur.

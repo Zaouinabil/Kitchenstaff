@@ -34,4 +34,8 @@ public class UserController {
     public UserDto create(@Valid @RequestBody CreateUserRequest request) {
         return userService.create(request);
     }
+    @PatchMapping("/{id}/deactivate")
+    public UserDto deactivate(@PathVariable Long id) {
+        return userService.deactivate(id);
+    }
 }

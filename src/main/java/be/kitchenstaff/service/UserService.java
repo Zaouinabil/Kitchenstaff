@@ -56,4 +56,14 @@ public class UserService {
 
         return dto;
     }
+    public UserDto deactivate(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        user.setActive(false);
+
+        User savedUser = userRepository.save(user);
+
+        return toDto(savedUser);
+    }
 }
