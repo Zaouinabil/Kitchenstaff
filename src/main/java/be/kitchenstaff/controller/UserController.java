@@ -1,6 +1,7 @@
 package be.kitchenstaff.controller;
 
 import be.kitchenstaff.dto.CreateUserRequest;
+import be.kitchenstaff.dto.UpdateUserRoleRequest;
 import be.kitchenstaff.dto.UserDto;
 import be.kitchenstaff.service.UserService;
 import jakarta.validation.Valid;
@@ -34,8 +35,16 @@ public class UserController {
     public UserDto create(@Valid @RequestBody CreateUserRequest request) {
         return userService.create(request);
     }
+    @PatchMapping("/{id}/role")
+    public UserDto updateRole(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRoleRequest request
+    ) {
+        return userService.updateRole(id, request);
+    }
     @PatchMapping("/{id}/deactivate")
     public UserDto deactivate(@PathVariable Long id) {
         return userService.deactivate(id);
     }
+
 }

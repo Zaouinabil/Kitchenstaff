@@ -6,6 +6,7 @@ import be.kitchenstaff.entity.User;
 import be.kitchenstaff.exception.ResourceNotFoundException;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import be.kitchenstaff.dto.UpdateUserRoleRequest;
 
 import java.util.List;
 
@@ -61,6 +62,16 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
 
         user.setActive(false);
+
+        User savedUser = userRepository.save(user);
+
+        return toDto(savedUser);
+    }
+    public UserDto updateRole(Long id, UpdateUserRoleRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        user.setRole(request.getRole());
 
         User savedUser = userRepository.save(user);
 

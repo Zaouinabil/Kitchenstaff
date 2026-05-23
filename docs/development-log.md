@@ -76,3 +76,9 @@ Cette étape prépare l’assignation des tâches à un membre de l’équipe.
 Ce commit ajoute un endpoint permettant de désactiver un utilisateur.
 L’utilisateur n’est pas supprimé de la base de données, mais son champ active passe à false.
 Cette approche permet de conserver l’historique des tâches liées à cet utilisateur.
+
+## Commit 12 - Add update user role endpoint
+
+Ce commit ajoute un endpoint permettant de modifier le rôle d’un utilisateur.
+Cette fonctionnalité prépare la future gestion des autorisations selon les rôles ADMIN, CHEF et COMMIS.
+Elle sera utile lorsque la sécurité avec JWT sera ajoutée.
