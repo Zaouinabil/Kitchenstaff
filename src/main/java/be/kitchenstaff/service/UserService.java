@@ -77,4 +77,14 @@ public class UserService {
 
         return toDto(savedUser);
     }
+    public UserDto reactivate(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        user.setActive(true);
+
+        User savedUser = userRepository.save(user);
+
+        return toDto(savedUser);
+    }
 }

@@ -46,5 +46,9 @@ public class UserController {
     public UserDto deactivate(@PathVariable Long id) {
         return userService.deactivate(id);
     }
+    @PatchMapping("/{id}/reactivate")
+    public UserDto reactivate(@PathVariable Long id) {
+        return userService.reactivate(id);
+    }
 
 }

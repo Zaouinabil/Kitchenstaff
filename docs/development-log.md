@@ -82,3 +82,9 @@ Cette approche permet de conserver l’historique des tâches liées à cet util
 Ce commit ajoute un endpoint permettant de modifier le rôle d’un utilisateur.
 Cette fonctionnalité prépare la future gestion des autorisations selon les rôles ADMIN, CHEF et COMMIS.
 Elle sera utile lorsque la sécurité avec JWT sera ajoutée.
+
+## Commit 13- Add reactivate user endpoint
+
+Ce commit ajoute un endpoint permettant de réactiver un utilisateur désactivé.
+Il complète la fonctionnalité de désactivation sans suppression définitive.
+Cette approche permet de conserver l’historique des tâches tout en gardant la possibilité de réactiver un membre de l’équipe.
