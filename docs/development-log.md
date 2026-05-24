@@ -88,3 +88,10 @@ Elle sera utile lorsque la sécurité avec JWT sera ajoutée.
 Ce commit ajoute un endpoint permettant de réactiver un utilisateur désactivé.
 Il complète la fonctionnalité de désactivation sans suppression définitive.
 Cette approche permet de conserver l’historique des tâches tout en gardant la possibilité de réactiver un membre de l’équipe.
+
+
+## Commit 14 - Add user update endpoint
+
+Ce commit ajoute un endpoint permettant de modifier les informations principales d’un utilisateur.
+Il permet de mettre à jour le nom et l’email sans exposer ni modifier le mot de passe.
+Cette fonctionnalité complète les premières opérations de gestion des utilisateurs dans le back-office.

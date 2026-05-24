@@ -7,6 +7,7 @@ import be.kitchenstaff.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import be.kitchenstaff.dto.UpdateUserRequest;
 
 import java.util.List;
 
@@ -49,6 +50,13 @@ public class UserController {
     @PatchMapping("/{id}/reactivate")
     public UserDto reactivate(@PathVariable Long id) {
         return userService.reactivate(id);
+    }
+    @PutMapping("/{id}")
+    public UserDto update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequest request
+    ) {
+        return userService.update(id, request);
     }
 
 }
