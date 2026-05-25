@@ -33,11 +33,20 @@ public class TaskService {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
     }
-
-    public List<TaskDto> findAll(LocalDate date) {
+    public List<TaskDto> findAll(LocalDate date, TaskStatus status, Long assignedUserId) {
         List<Task> tasks;
 
-        if (date != null) {
+        if (date != null && status != null && assignedUserId != null) {
+            tasks = taskRepository.findByTaskDateAndStatusAndAssignedUserId(date, status, assignedUserId);
+        } else if (date != null && status != null) {
+            tasks = taskRepository.findByTaskDateAndStatus(date, status);
+        } else if (date != null && assignedUserId != null) {
+            tasks = taskRepository.findByTaskDateAndAssignedUserId(date, assignedUserId);
+        } else if (status != null) {
+            tasks = taskRepository.findByStatus(status);
+        } else if (assignedUserId != null) {
+            tasks = taskRepository.findByAssignedUserId(assignedUserId);
+        } else if (date != null) {
             tasks = taskRepository.findByTaskDateOrderByIdDesc(date);
         } else {
             tasks = taskRepository.findAllByOrderByIdDesc();
@@ -47,6 +56,8 @@ public class TaskService {
                 .map(this::toDto)
                 .toList();
     }
+
+
 
     public TaskDto findById(Long id) {
         Task task = getTaskOrThrow(id);

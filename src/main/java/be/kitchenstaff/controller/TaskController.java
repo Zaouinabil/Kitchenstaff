@@ -7,6 +7,7 @@ import be.kitchenstaff.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import be.kitchenstaff.enums.TaskStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,8 +23,19 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDto> findAll(@RequestParam(required = false) LocalDate date) {
-        return taskService.findAll(date);
+
+    public List<TaskDto> findAll(
+
+            @RequestParam(required = false) LocalDate date,
+
+            @RequestParam(required = false) TaskStatus status,
+
+            @RequestParam(required = false) Long assignedUserId
+
+    ) {
+
+        return taskService.findAll(date, status, assignedUserId);
+
     }
 
     @GetMapping("/{id}")

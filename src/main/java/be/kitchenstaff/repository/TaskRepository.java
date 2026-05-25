@@ -22,4 +22,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findAllByOrderByIdDesc();
 
     long countByTaskDateAndStatus(LocalDate taskDate, TaskStatus status);
+
+    List<Task> findByTaskDateAndAssignedUserId(LocalDate taskDate, Long assignedUserId);
+
+    List<Task> findByTaskDateAndStatusAndAssignedUserId(
+            LocalDate taskDate,
+            TaskStatus status,
+            Long assignedUserId
+    );
 }
