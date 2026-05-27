@@ -95,3 +95,15 @@ Cette approche permet de conserver l’historique des tâches tout en gardant la
 Ce commit ajoute un endpoint permettant de modifier les informations principales d’un utilisateur.
 Il permet de mettre à jour le nom et l’email sans exposer ni modifier le mot de passe.
 Cette fonctionnalité complète les premières opérations de gestion des utilisateurs dans le back-office.
+
+## Commit 15- Add task filters by status and user
+
+Ce commit améliore la consultation des tâches en ajoutant des filtres optionnels.
+L’API permet maintenant de filtrer les tâches par date, par statut et par utilisateur assigné.
+Cette fonctionnalité est utile pour le chef, qui peut suivre les tâches terminées ou restantes, et pour les commis, qui peuvent consulter leurs tâches assignées.
+
+## Commit 17 - Add task filter by category
+
+Ce commit ajoute un filtre par catégorie dans la consultation des tâches.
+L’API permet maintenant de récupérer les tâches liées à une catégorie précise, par exemple Légumes, Sauces ou Salades.
+Cette fonctionnalité est utile pour le chef afin de suivre séparément les préparations de chaque zone de la cuisine froide.

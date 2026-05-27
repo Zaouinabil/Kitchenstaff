@@ -8,11 +8,11 @@ import be.kitchenstaff.entity.Task;
 import be.kitchenstaff.entity.User;
 import be.kitchenstaff.enums.TaskPriority;
 import be.kitchenstaff.enums.TaskStatus;
+import be.kitchenstaff.exception.ResourceNotFoundException;
 import be.kitchenstaff.repository.ItemRepository;
 import be.kitchenstaff.repository.TaskRepository;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import be.kitchenstaff.exception.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,21 +33,45 @@ public class TaskService {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
     }
-    public List<TaskDto> findAll(LocalDate date, TaskStatus status, Long assignedUserId) {
+
+    public List<TaskDto> findAll(
+            LocalDate date,
+            TaskStatus status,
+            Long assignedUserId,
+            Long categoryId
+    ) {
         List<Task> tasks;
 
         if (date != null && status != null && assignedUserId != null) {
             tasks = taskRepository.findByTaskDateAndStatusAndAssignedUserId(date, status, assignedUserId);
+
+        } else if (date != null && status != null && categoryId != null) {
+            tasks = taskRepository.findByTaskDateAndStatusAndItemCategoryId(date, status, categoryId);
+
         } else if (date != null && status != null) {
             tasks = taskRepository.findByTaskDateAndStatus(date, status);
+
         } else if (date != null && assignedUserId != null) {
             tasks = taskRepository.findByTaskDateAndAssignedUserId(date, assignedUserId);
+
+        } else if (date != null && categoryId != null) {
+            tasks = taskRepository.findByTaskDateAndItemCategoryId(date, categoryId);
+
+        } else if (status != null && categoryId != null) {
+            tasks = taskRepository.findByStatusAndItemCategoryId(status, categoryId);
+
         } else if (status != null) {
             tasks = taskRepository.findByStatus(status);
+
         } else if (assignedUserId != null) {
             tasks = taskRepository.findByAssignedUserId(assignedUserId);
+
+        } else if (categoryId != null) {
+            tasks = taskRepository.findByItemCategoryId(categoryId);
+
         } else if (date != null) {
             tasks = taskRepository.findByTaskDateOrderByIdDesc(date);
+
         } else {
             tasks = taskRepository.findAllByOrderByIdDesc();
         }
@@ -57,10 +81,9 @@ public class TaskService {
                 .toList();
     }
 
-
-
     public TaskDto findById(Long id) {
         Task task = getTaskOrThrow(id);
+
         return toDto(task);
     }
 
@@ -79,6 +102,7 @@ public class TaskService {
         if (request.getAssignedUserId() != null) {
             User user = userRepository.findById(request.getAssignedUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
             task.setAssignedUser(user);
         }
 
@@ -91,7 +115,7 @@ public class TaskService {
         Task task = getTaskOrThrow(id);
 
         Item item = itemRepository.findById(request.getItemId())
-                .orElseThrow(() -> new RuntimeException("Préparation introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
 
         task.setTaskDate(request.getTaskDate());
         task.setItem(item);
@@ -101,7 +125,8 @@ public class TaskService {
 
         if (request.getAssignedUserId() != null) {
             User user = userRepository.findById(request.getAssignedUserId())
-                    .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
             task.setAssignedUser(user);
         } else {
             task.setAssignedUser(null);
@@ -114,6 +139,7 @@ public class TaskService {
 
     public TaskDto start(Long id) {
         Task task = getTaskOrThrow(id);
+
         task.setStatus(TaskStatus.EN_COURS);
 
         Task savedTask = taskRepository.save(task);
@@ -123,6 +149,7 @@ public class TaskService {
 
     public TaskDto done(Long id) {
         Task task = getTaskOrThrow(id);
+
         task.setStatus(TaskStatus.TERMINEE);
 
         Task savedTask = taskRepository.save(task);
@@ -132,6 +159,7 @@ public class TaskService {
 
     public TaskDto cancel(Long id) {
         Task task = getTaskOrThrow(id);
+
         task.setStatus(TaskStatus.ANNULEE);
 
         Task savedTask = taskRepository.save(task);
@@ -141,6 +169,7 @@ public class TaskService {
 
     public void delete(Long id) {
         Task task = getTaskOrThrow(id);
+
         taskRepository.delete(task);
     }
 

@@ -23,19 +23,13 @@ public class TaskController {
     }
 
     @GetMapping
-
     public List<TaskDto> findAll(
-
             @RequestParam(required = false) LocalDate date,
-
             @RequestParam(required = false) TaskStatus status,
-
-            @RequestParam(required = false) Long assignedUserId
-
+            @RequestParam(required = false) Long assignedUserId,
+            @RequestParam(required = false) Long categoryId
     ) {
-
-        return taskService.findAll(date, status, assignedUserId);
-
+        return taskService.findAll(date, status, assignedUserId, categoryId);
     }
 
     @GetMapping("/{id}")

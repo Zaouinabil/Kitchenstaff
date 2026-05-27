@@ -1,4 +1,6 @@
 package be.kitchenstaff.repository;
+import java.time.LocalDate;
+import java.util.List;
 
 import be.kitchenstaff.entity.Task;
 import be.kitchenstaff.enums.TaskStatus;
@@ -29,5 +31,16 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             LocalDate taskDate,
             TaskStatus status,
             Long assignedUserId
+    );
+    List<Task> findByItemCategoryId(Long categoryId);
+
+    List<Task> findByTaskDateAndItemCategoryId(LocalDate taskDate, Long categoryId);
+
+    List<Task> findByStatusAndItemCategoryId(TaskStatus status, Long categoryId);
+
+    List<Task> findByTaskDateAndStatusAndItemCategoryId(
+            LocalDate taskDate,
+            TaskStatus status,
+            Long categoryId
     );
 }
