@@ -107,3 +107,10 @@ Cette fonctionnalité est utile pour le chef, qui peut suivre les tâches termin
 Ce commit ajoute un filtre par catégorie dans la consultation des tâches.
 L’API permet maintenant de récupérer les tâches liées à une catégorie précise, par exemple Légumes, Sauces ou Salades.
 Cette fonctionnalité est utile pour le chef afin de suivre séparément les préparations de chaque zone de la cuisine froide.
+
+## Commit 18- Add password encoding
+
+Ce commit améliore la sécurité de la gestion des utilisateurs.
+Les mots de passe ne sont plus enregistrés en clair dans la base de données.
+Ils sont maintenant encodés avec BCrypt avant la sauvegarde.
+Cette étape prépare l’authentification sécurisée qui sera ajoutée plus tard avec Spring Security et JWT.

@@ -13,6 +13,7 @@ import be.kitchenstaff.repository.ItemRepository;
 import be.kitchenstaff.repository.TaskRepository;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import be.kitchenstaff.exception.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
