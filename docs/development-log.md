@@ -114,3 +114,10 @@ Ce commit améliore la sécurité de la gestion des utilisateurs.
 Les mots de passe ne sont plus enregistrés en clair dans la base de données.
 Ils sont maintenant encodés avec BCrypt avant la sauvegarde.
 Cette étape prépare l’authentification sécurisée qui sera ajoutée plus tard avec Spring Security et JWT.
+
+## Commit - Add authentication login endpoint
+
+Ce commit ajoute un endpoint de connexion pour l’application.
+L’utilisateur peut se connecter avec son email et son mot de passe.
+Le service vérifie le mot de passe encodé avec BCrypt et refuse les identifiants incorrects.
+Cette étape prépare l’ajout futur d’un token JWT pour sécuriser les routes de l’API.
