@@ -127,3 +127,10 @@ Cette étape prépare l’ajout futur d’un token JWT pour sécuriser les route
 Ce commit prépare la réponse de connexion pour la future authentification JWT.
 La réponse contient maintenant les champs token et tokenType.
 Pour le moment, le token reste null, mais la structure est prête pour l’intégration du JWT dans une étape suivante.
+
+## Commit 21- Add JWT utility service
+
+Ce commit ajoute la génération d’un token JWT lors de la connexion.
+Le service JwtService crée un token contenant l’email, l’identifiant utilisateur, le nom et le rôle.
+La réponse de login retourne maintenant un token de type Bearer.
+Cette étape prépare la sécurisation des endpoints de l’API.
