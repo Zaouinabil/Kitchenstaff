@@ -1,6 +1,7 @@
 package be.kitchenstaff.service;
 
 import be.kitchenstaff.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,41 @@ public class JwtService {
                 .expiration(expirationDate)
                 .signWith(getSigningKey())
                 .compact();
+    }
+
+    public String extractEmail(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("userId", Long.class);
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return !isTokenExpired(token);
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expirationDate = extractAllClaims(token).getExpiration();
+
+        return expirationDate.before(new Date());
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private SecretKey getSigningKey() {

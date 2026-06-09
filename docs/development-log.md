@@ -134,3 +134,10 @@ Ce commit ajoute la génération d’un token JWT lors de la connexion.
 Le service JwtService crée un token contenant l’email, l’identifiant utilisateur, le nom et le rôle.
 La réponse de login retourne maintenant un token de type Bearer.
 Cette étape prépare la sécurisation des endpoints de l’API.
+
+## Commit 22- Add JWT validation methods
+
+Ce commit complète le service JWT.
+En plus de générer un token, JwtService permet maintenant d’extraire l’email, l’identifiant utilisateur et le rôle depuis le token.
+Il permet aussi de vérifier si un token est valide et non expiré.
+Cette étape prépare la protection des endpoints avec un filtre d’authentification JWT.
