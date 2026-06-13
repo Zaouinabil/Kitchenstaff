@@ -141,3 +141,10 @@ Ce commit complète le service JWT.
 En plus de générer un token, JwtService permet maintenant d’extraire l’email, l’identifiant utilisateur et le rôle depuis le token.
 Il permet aussi de vérifier si un token est valide et non expiré.
 Cette étape prépare la protection des endpoints avec un filtre d’authentification JWT.
+
+## Commit 23- Add JWT authentication filter
+
+Ce commit ajoute un filtre d’authentification JWT.
+Le filtre lit le token envoyé dans le header Authorization, vérifie sa validité et identifie l’utilisateur connecté.
+La configuration Spring Security rend les routes de l’API protégées par défaut, sauf le login et le endpoint de santé.
+Cette étape permet de commencer à sécuriser réellement l’API Kitchenstaff.
