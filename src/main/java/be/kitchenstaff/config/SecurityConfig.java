@@ -27,6 +27,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/health").permitAll()
+
+                        // Utilisateurs : réservé à l'administrateur
+                        .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
+
+                        // Catégories et préparations : chef ou admin
+                        .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "CHEF")
+                        .requestMatchers("/api/v1/items/**").hasAnyRole("ADMIN", "CHEF")
+
+                        // Dashboard : chef ou admin
+                        .requestMatchers("/api/v1/dashboard/**").hasAnyRole("ADMIN", "CHEF")
+
+                        // Tâches : tous les utilisateurs connectés
+                        .requestMatchers("/api/v1/tasks/**").hasAnyRole("ADMIN", "CHEF", "COMMIS")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

@@ -148,3 +148,11 @@ Ce commit ajoute un filtre d’authentification JWT.
 Le filtre lit le token envoyé dans le header Authorization, vérifie sa validité et identifie l’utilisateur connecté.
 La configuration Spring Security rend les routes de l’API protégées par défaut, sauf le login et le endpoint de santé.
 Cette étape permet de commencer à sécuriser réellement l’API Kitchenstaff.
+
+## Commit 24- Add role based authorization
+
+Ce commit ajoute une première gestion des autorisations selon les rôles.
+Les routes liées aux utilisateurs sont réservées à l’administrateur.
+Les routes des catégories, préparations et du dashboard sont accessibles au chef et à l’administrateur.
+Les routes des tâches restent accessibles aux utilisateurs connectés, car les commis doivent pouvoir consulter et mettre à jour leur travail.
+Cette étape renforce la sécurité de l’API et correspond mieux aux acteurs définis dans l’analyse du projet.
