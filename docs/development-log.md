@@ -156,3 +156,10 @@ Les routes liées aux utilisateurs sont réservées à l’administrateur.
 Les routes des catégories, préparations et du dashboard sont accessibles au chef et à l’administrateur.
 Les routes des tâches restent accessibles aux utilisateurs connectés, car les commis doivent pouvoir consulter et mettre à jour leur travail.
 Cette étape renforce la sécurité de l’API et correspond mieux aux acteurs définis dans l’analyse du projet.
+
+
+## Commit   25 - Add authenticated user endpoint
+
+Ce commit ajoute un endpoint permettant de récupérer l’utilisateur actuellement connecté.
+L’endpoint /api/v1/auth/me utilise le token JWT envoyé dans le header Authorization pour identifier l’utilisateur.
+Cette fonctionnalité sera utile pour le futur frontend afin d’afficher le nom, l’email et le rôle de l’utilisateur connecté.
