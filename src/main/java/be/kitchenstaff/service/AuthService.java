@@ -1,5 +1,6 @@
 package be.kitchenstaff.service;
-
+import be.kitchenstaff.dto.CurrentUserResponse;
+import be.kitchenstaff.exception.ResourceNotFoundException;
 
 import be.kitchenstaff.dto.LoginRequest;
 import be.kitchenstaff.dto.LoginResponse;
@@ -24,6 +25,18 @@ public class AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+    }
+    public CurrentUserResponse getCurrentUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        CurrentUserResponse response = new CurrentUserResponse();
+        response.setUserId(user.getId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole());
+
+        return response;
     }
 
     public LoginResponse login(LoginRequest request) {
