@@ -6,6 +6,7 @@ import be.kitchenstaff.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import be.kitchenstaff.dto.UpdateItemRequest;
 
 import java.util.List;
 @RestController
@@ -35,6 +36,13 @@ public class ItemController {
 
         return itemService.create(request);
 
+    }
+    @PutMapping("/{id}")
+    public ItemDto update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateItemRequest request
+    ) {
+        return itemService.update(id, request);
     }
 }
 

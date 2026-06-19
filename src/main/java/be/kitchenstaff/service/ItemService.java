@@ -1,4 +1,5 @@
 package be.kitchenstaff.service;
+import be.kitchenstaff.dto.UpdateItemRequest;
 
 import be.kitchenstaff.dto.CreateItemRequest;
 import be.kitchenstaff.dto.ItemDto;
@@ -34,6 +35,21 @@ public class ItemService {
         return items.stream()
                 .map(this::toDto)
                 .toList();
+    }
+    public ItemDto update(Long id, UpdateItemRequest request) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie introuvable"));
+
+        item.setName(request.getName());
+        item.setUnit(request.getUnit());
+        item.setCategory(category);
+
+        Item savedItem = itemRepository.save(item);
+
+        return toDto(savedItem);
     }
 
     public ItemDto create(CreateItemRequest request) {

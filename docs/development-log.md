@@ -163,3 +163,9 @@ Cette étape renforce la sécurité de l’API et correspond mieux aux acteurs d
 Ce commit ajoute un endpoint permettant de récupérer l’utilisateur actuellement connecté.
 L’endpoint /api/v1/auth/me utilise le token JWT envoyé dans le header Authorization pour identifier l’utilisateur.
 Cette fonctionnalité sera utile pour le futur frontend afin d’afficher le nom, l’email et le rôle de l’utilisateur connecté.
+
+## Commit 26 - Add item update endpoint
+
+Ce commit ajoute la modification d’une préparation existante.
+Le chef peut maintenant mettre à jour le nom, l’unité et la catégorie d’une préparation.
+Cette fonctionnalité complète la gestion des préparations dans l’API Kitchenstaff.
