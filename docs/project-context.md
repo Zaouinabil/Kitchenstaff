@@ -136,3 +136,9 @@ La première version reste volontairement simple. Elle ne gère pas encore :
 Ces fonctionnalités pourront être ajoutées dans une version future.
 
 La priorité est de créer un MVP fonctionnel centré sur la mise en place du matin.
+
+## Commit - Add API test documentation
+
+Ce commit ajoute une documentation des tests API réalisés avec Postman.
+Le document décrit les principales requêtes de test : authentification, routes protégées, gestion des tâches, dashboard, erreurs et rôles.
+Cette documentation facilite la validation du backend et la présentation du projet.
