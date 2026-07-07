@@ -169,3 +169,14 @@ Cette fonctionnalité sera utile pour le futur frontend afin d’afficher le nom
 Ce commit ajoute la modification d’une préparation existante.
 Le chef peut maintenant mettre à jour le nom, l’unité et la catégorie d’une préparation.
 Cette fonctionnalité complète la gestion des préparations dans l’API Kitchenstaff.
+
+
+## Commit 27 - Add CORS configuration
+
+Ce commit ajoute une configuration CORS pour préparer la communication entre le backend Spring Boot et le futur frontend.
+
+Les origines locales utilisées par React et Vite sont autorisées à appeler l’API. Les méthodes HTTP nécessaires ainsi que les headers Content-Type et Authorization sont également autorisés.
+
+Cette configuration permet au frontend d’envoyer des requêtes JSON et un token JWT vers les endpoints protégés de l’API.
+
+
