@@ -39,6 +39,7 @@ public class UserService {
         return toDto(user);
     }
 
+
     public UserDto create(CreateUserRequest request) {
         User user = new User();
         user.setName(request.getName());

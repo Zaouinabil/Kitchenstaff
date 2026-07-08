@@ -1,6 +1,7 @@
 package be.kitchenstaff.service;
 import be.kitchenstaff.dto.UpdateItemRequest;
 
+
 import be.kitchenstaff.dto.CreateItemRequest;
 import be.kitchenstaff.dto.ItemDto;
 import be.kitchenstaff.entity.Category;
@@ -81,4 +82,5 @@ public class ItemService {
 
         return dto;
     }
+
 }
