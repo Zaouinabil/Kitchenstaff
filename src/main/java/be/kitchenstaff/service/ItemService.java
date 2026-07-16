@@ -1,5 +1,6 @@
 package be.kitchenstaff.service;
 import be.kitchenstaff.dto.UpdateItemRequest;
+import be.kitchenstaff.exception.ResourceAlreadyExistsException;
 
 
 import be.kitchenstaff.dto.CreateItemRequest;
@@ -37,6 +38,7 @@ public class ItemService {
                 .map(this::toDto)
                 .toList();
     }
+
     public ItemDto update(Long id, UpdateItemRequest request) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
@@ -54,18 +56,39 @@ public class ItemService {
     }
 
     public ItemDto create(CreateItemRequest request) {
+
+        if (itemRepository.existsByName(request.getName())) {
+
+            throw new ResourceAlreadyExistsException(
+
+                    "Une préparation avec ce nom existe déjà"
+
+            );
+
+        }
+
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Catégorie introuvable"));
+
+                .orElseThrow(() ->
+
+                        new ResourceNotFoundException("Catégorie introuvable")
+
+                );
 
         Item item = new Item();
+
         item.setName(request.getName());
+
         item.setUnit(request.getUnit());
+
         item.setCategory(category);
+
         item.setActive(true);
 
         Item savedItem = itemRepository.save(item);
 
         return toDto(savedItem);
+
     }
 
     private ItemDto toDto(Item item) {

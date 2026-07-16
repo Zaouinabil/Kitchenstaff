@@ -1,5 +1,5 @@
 package be.kitchenstaff.service;
-
+import be.kitchenstaff.exception.ResourceAlreadyExistsException;
 import be.kitchenstaff.dto.CategoryDto;
 import be.kitchenstaff.dto.CreateCategoryRequest;
 import be.kitchenstaff.entity.Category;
@@ -25,6 +25,12 @@ public class CategoryService {
     }
 
     public CategoryDto create(CreateCategoryRequest request) {
+        if (categoryRepository.existsByName(request.getName())) {
+            throw new ResourceAlreadyExistsException(
+                    "Une catégorie avec ce nom existe déjà"
+            );
+        }
+
         Category category = new Category();
         category.setName(request.getName());
         category.setDescription(request.getDescription());
