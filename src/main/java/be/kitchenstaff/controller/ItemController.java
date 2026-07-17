@@ -45,5 +45,13 @@ public class ItemController {
     ) {
         return itemService.update(id, request);
     }
+    @PatchMapping("/{id}/deactivate")
+    public ItemDto deactivate(@PathVariable Long id) {
+        return itemService.deactivate(id);
+    }
+    @PatchMapping("/{id}/reactivate")
+    public ItemDto reactivate(@PathVariable Long id) {
+        return itemService.reactivate(id);
+    }
 }
 

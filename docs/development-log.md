@@ -179,4 +179,17 @@ Les origines locales utilisées par React et Vite sont autorisées à appeler l�
 
 Cette configuration permet au frontend d’envoyer des requêtes JSON et un token JWT vers les endpoints protégés de l’API.
 
+## Commit 28- Add duplicate item name validation
+
+Ce commit empêche la création de plusieurs préparations portant le même nom.
+
+Avant l'enregistrement, le service vérifie si une préparation existe déjà. Dans ce cas, l'API retourne une réponse 409 Conflict avec un message clair.
+
+Cette validation évite les doublons dans la liste des préparations et améliore la qualité des données.
+
+## Commit 29 - Add item deactivate endpoint
+
+Ce commit ajoute la possibilité de désactiver et réactiver une préparation.
+
+Au lieu de supprimer définitivement une préparation, le chef ou l'administrateur peut la rendre inactive. Cette approche permet de conserver l'historique des données tout en masquant les préparations qui ne sont plus utilisées.
 

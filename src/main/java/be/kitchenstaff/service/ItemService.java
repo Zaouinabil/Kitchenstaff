@@ -106,4 +106,25 @@ public class ItemService {
         return dto;
     }
 
+    public ItemDto deactivate(Long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
+
+        item.setActive(false);
+
+        Item savedItem = itemRepository.save(item);
+
+        return toDto(savedItem);
+    }
+    public ItemDto reactivate(Long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
+
+        item.setActive(true);
+
+        Item savedItem = itemRepository.save(item);
+
+        return toDto(savedItem);
+    }
+
 }
