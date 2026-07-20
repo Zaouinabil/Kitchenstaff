@@ -193,3 +193,8 @@ Ce commit ajoute la possibilité de désactiver et réactiver une préparation.
 
 Au lieu de supprimer définitivement une préparation, le chef ou l'administrateur peut la rendre inactive. Cette approche permet de conserver l'historique des données tout en masquant les préparations qui ne sont plus utilisées.
 
+## Commit - Add task unassign endpoint
+
+Ce commit ajoute un endpoint permettant de retirer l'utilisateur assigné à une tâche.
+
+Cette fonctionnalité permet au chef de corriger une mauvaise assignation ou de remettre une tâche dans la liste générale sans responsable précis.

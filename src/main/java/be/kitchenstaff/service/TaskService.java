@@ -137,6 +137,15 @@ public class TaskService {
 
         return toDto(savedTask);
     }
+    public TaskDto unassign(Long id) {
+        Task task = getTaskOrThrow(id);
+
+        task.setAssignedUser(null);
+
+        Task savedTask = taskRepository.save(task);
+
+        return toDto(savedTask);
+    }
 
     public TaskDto start(Long id) {
         Task task = getTaskOrThrow(id);

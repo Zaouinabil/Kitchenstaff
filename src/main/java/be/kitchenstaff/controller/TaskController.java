@@ -37,6 +37,11 @@ public class TaskController {
         return taskService.findById(id);
     }
 
+    @PatchMapping("/{id}/unassign")
+    public TaskDto unassign(@PathVariable Long id) {
+        return taskService.unassign(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto create(@Valid @RequestBody CreateTaskRequest request) {
