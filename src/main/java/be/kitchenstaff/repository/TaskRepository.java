@@ -11,13 +11,12 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    List<Task> findByTaskDate(LocalDate taskDate);
 
-    List<Task> findByStatus(TaskStatus status);
+    List<Task> findByStatusOrderByIdDesc(TaskStatus status);
 
     List<Task> findByTaskDateAndStatus(LocalDate taskDate, TaskStatus status);
 
-    List<Task> findByAssignedUserId(Long userId);
+    List<Task> findByAssignedUserIdOrderByIdDesc(Long userId);
 
     List<Task> findByTaskDateOrderByIdDesc(LocalDate taskDate);
 

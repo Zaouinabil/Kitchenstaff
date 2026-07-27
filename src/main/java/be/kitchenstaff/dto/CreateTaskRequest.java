@@ -1,5 +1,5 @@
 package be.kitchenstaff.dto;
-
+import jakarta.validation.constraints.PositiveOrZero;
 import be.kitchenstaff.enums.TaskPriority;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +24,7 @@ public class CreateTaskRequest {
     private TaskPriority priority = TaskPriority.NORMALE;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "La quantité doit être supérieure à 0")
+    @PositiveOrZero(message = "La quantité doit être positive ou égale à zéro")
     private BigDecimal quantity;
 
     @Size(max = 255, message = "Le commentaire ne peut pas dépasser 255 caractères")

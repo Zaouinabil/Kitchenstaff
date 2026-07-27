@@ -198,3 +198,15 @@ Au lieu de supprimer définitivement une préparation, le chef ou l'administrate
 Ce commit ajoute un endpoint permettant de retirer l'utilisateur assigné à une tâche.
 
 Cette fonctionnalité permet au chef de corriger une mauvaise assignation ou de remettre une tâche dans la liste générale sans responsable précis.
+
+## Commit - Disable open in view
+
+Ce commit désactive l’option spring.jpa.open-in-view.
+
+Cette configuration évite que des requêtes vers la base de données soient exécutées pendant la génération des réponses JSON. Elle rend l’architecture plus propre en gardant l’accès aux données dans la couche service.
+
+## Commit - Add task quantity validation
+
+Ce commit ajoute une validation sur la quantité des tâches.
+
+L’API refuse maintenant les quantités négatives lors de la création ou de la modification d’une tâche. Cette règle métier évite les données incohérentes dans la gestion de la mise en place.
