@@ -3,11 +3,12 @@ package be.kitchenstaff.controller;
 import be.kitchenstaff.dto.CreateTaskRequest;
 import be.kitchenstaff.dto.TaskDto;
 import be.kitchenstaff.dto.UpdateTaskRequest;
+import be.kitchenstaff.enums.TaskStatus;
 import be.kitchenstaff.service.TaskService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import be.kitchenstaff.enums.TaskStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,10 +25,18 @@ public class TaskController {
 
     @GetMapping
     public List<TaskDto> findAll(
-            @RequestParam(required = false) LocalDate date,
-            @RequestParam(required = false) TaskStatus status,
-            @RequestParam(required = false) Long assignedUserId,
-            @RequestParam(required = false) Long categoryId
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date,
+
+            @RequestParam(required = false)
+            TaskStatus status,
+
+            @RequestParam(required = false)
+            Long assignedUserId,
+
+            @RequestParam(required = false)
+            Long categoryId
     ) {
         return taskService.findAll(date, status, assignedUserId, categoryId);
     }
@@ -35,11 +44,6 @@ public class TaskController {
     @GetMapping("/{id}")
     public TaskDto findById(@PathVariable Long id) {
         return taskService.findById(id);
-    }
-
-    @PatchMapping("/{id}/unassign")
-    public TaskDto unassign(@PathVariable Long id) {
-        return taskService.unassign(id);
     }
 
     @PostMapping
@@ -69,6 +73,11 @@ public class TaskController {
     @PatchMapping("/{id}/cancel")
     public TaskDto cancel(@PathVariable Long id) {
         return taskService.cancel(id);
+    }
+
+    @PatchMapping("/{id}/unassign")
+    public TaskDto unassign(@PathVariable Long id) {
+        return taskService.unassign(id);
     }
 
     @DeleteMapping("/{id}")
