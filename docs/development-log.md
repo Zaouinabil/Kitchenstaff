@@ -210,3 +210,10 @@ Cette configuration évite que des requêtes vers la base de données soient ex�
 Ce commit ajoute une validation sur la quantité des tâches.
 
 L’API refuse maintenant les quantités négatives lors de la création ou de la modification d’une tâche. Cette règle métier évite les données incohérentes dans la gestion de la mise en place.
+
+
+## Commit - Add task comment length validation
+
+Ce commit ajoute une validation sur la longueur du commentaire d'une tâche.
+
+Le commentaire ne peut pas dépasser 255 caractères, ce qui correspond à la limite définie dans l'entité Task. Cette validation évite les données trop longues et améliore la cohérence entre l'API et la base de données.
