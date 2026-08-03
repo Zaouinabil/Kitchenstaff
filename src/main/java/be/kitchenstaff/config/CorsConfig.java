@@ -15,11 +15,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:4200",
-                "http://localhost:5173",
-                "http://localhost:60359"
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:*"
         ));
 
         configuration.setAllowedMethods(List.of(
