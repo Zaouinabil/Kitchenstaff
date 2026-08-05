@@ -104,48 +104,25 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void createUserIfNotExists(String name, String email, Role role) {
-
         userRepository.findByEmail(email).ifPresentOrElse(
-
                 existingUser -> {
+                    existingUser.setName(name);
+                    existingUser.setPassword(passwordEncoder.encode("password"));
+                    existingUser.setRole(role);
+                    existingUser.setActive(true);
 
-                    if (!existingUser.getPassword().startsWith("$2a$")
-
-                            && !existingUser.getPassword().startsWith("$2b$")
-
-                            && !existingUser.getPassword().startsWith("$2y$")) {
-
-                        existingUser.setPassword(passwordEncoder.encode("password"));
-
-                        existingUser.setActive(true);
-
-                        existingUser.setRole(role);
-
-                        userRepository.save(existingUser);
-
-                    }
-
+                    userRepository.save(existingUser);
                 },
-
                 () -> {
-
                     User user = new User();
-
                     user.setName(name);
-
                     user.setEmail(email);
-
                     user.setPassword(passwordEncoder.encode("password"));
-
                     user.setRole(role);
-
                     user.setActive(true);
 
                     userRepository.save(user);
-
                 }
-
         );
-
     }
 }
