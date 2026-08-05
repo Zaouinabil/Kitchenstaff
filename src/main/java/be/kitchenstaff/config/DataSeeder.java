@@ -2,82 +2,150 @@ package be.kitchenstaff.config;
 
 import be.kitchenstaff.entity.Category;
 import be.kitchenstaff.entity.Item;
+import be.kitchenstaff.entity.User;
+import be.kitchenstaff.enums.Role;
 import be.kitchenstaff.repository.CategoryRepository;
 import be.kitchenstaff.repository.ItemRepository;
+import be.kitchenstaff.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class DataSeeder {
+@Component
+public class DataSeeder implements CommandLineRunner {
 
-    @Bean
-    CommandLineRunner seedData(
+    private final CategoryRepository categoryRepository;
+    private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public DataSeeder(
             CategoryRepository categoryRepository,
-            ItemRepository itemRepository
+            ItemRepository itemRepository,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
     ) {
-        return args -> {
-            Category legumes = createCategoryIfNotExists(
-                    categoryRepository,
-                    "Légumes",
-                    "Préparations liées aux légumes"
-            );
-
-            Category sauces = createCategoryIfNotExists(
-                    categoryRepository,
-                    "Sauces",
-                    "Préparations des sauces froides"
-            );
-
-            Category salades = createCategoryIfNotExists(
-                    categoryRepository,
-                    "Salades",
-                    "Préparations du salad bar"
-            );
-
-            createItemIfNotExists(itemRepository, "Tomates rondelles", "kg", legumes);
-            createItemIfNotExists(itemRepository, "Oignons", "kg", legumes);
-            createItemIfNotExists(itemRepository, "Choux blanc", "kg", legumes);
-            createItemIfNotExists(itemRepository, "Choux rouge", "kg", legumes);
-            createItemIfNotExists(itemRepository, "Carottes râpées", "kg", legumes);
-
-            createItemIfNotExists(itemRepository, "Mayonnaise", "litre", sauces);
-            createItemIfNotExists(itemRepository, "Sauce tartare", "litre", sauces);
-            createItemIfNotExists(itemRepository, "Vinaigrette", "litre", sauces);
-
-            createItemIfNotExists(itemRepository, "Œufs cuits", "pièce", salades);
-            createItemIfNotExists(itemRepository, "Haricots cuits", "kg", salades);
-        };
+        this.categoryRepository = categoryRepository;
+        this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    private Category createCategoryIfNotExists(
-            CategoryRepository categoryRepository,
-            String name,
-            String description
-    ) {
+    @Override
+    public void run(String... args) {
+        Category legumes = createCategoryIfNotExists(
+                "Légumes",
+                "Préparations liées aux légumes"
+        );
+
+        Category sauces = createCategoryIfNotExists(
+                "Sauces",
+                "Préparations liées aux sauces"
+        );
+
+        Category salades = createCategoryIfNotExists(
+                "Salades",
+                "Préparations liées aux salades"
+        );
+
+        createItemIfNotExists("Tomates rondelles", "kg", legumes);
+        createItemIfNotExists("Oignons", "kg", legumes);
+        createItemIfNotExists("Choux blanc", "kg", legumes);
+        createItemIfNotExists("Choux rouge", "kg", legumes);
+        createItemIfNotExists("Carottes râpées", "kg", legumes);
+        createItemIfNotExists("Œufs cuits", "pièce", salades);
+        createItemIfNotExists("Haricots cuits", "kg", salades);
+        createItemIfNotExists("Mayonnaise", "litre", sauces);
+        createItemIfNotExists("Sauce tartare", "litre", sauces);
+        createItemIfNotExists("Vinaigrette", "litre", sauces);
+
+        createUserIfNotExists(
+                "Admin Kitchenstaff",
+                "admin@kitchenstaff.test",
+                Role.ADMIN
+        );
+
+        createUserIfNotExists(
+                "Chef Cuisine",
+                "chef@kitchenstaff.test",
+                Role.CHEF
+        );
+
+        createUserIfNotExists(
+                "Commis Cuisine",
+                "commis@kitchenstaff.test",
+                Role.COMMIS
+        );
+    }
+
+    private Category createCategoryIfNotExists(String name, String description) {
         return categoryRepository.findByName(name)
                 .orElseGet(() -> {
                     Category category = new Category();
                     category.setName(name);
                     category.setDescription(description);
+
                     return categoryRepository.save(category);
                 });
     }
 
-    private void createItemIfNotExists(
-            ItemRepository itemRepository,
-            String name,
-            String unit,
-            Category category
-    ) {
-        if (!itemRepository.existsByName(name)) {
-            Item item = new Item();
-            item.setName(name);
-            item.setUnit(unit);
-            item.setCategory(category);
-            item.setActive(true);
-
-            itemRepository.save(item);
+    private void createItemIfNotExists(String name, String unit, Category category) {
+        if (itemRepository.existsByName(name)) {
+            return;
         }
+
+        Item item = new Item();
+        item.setName(name);
+        item.setUnit(unit);
+        item.setCategory(category);
+        item.setActive(true);
+
+        itemRepository.save(item);
+    }
+
+    private void createUserIfNotExists(String name, String email, Role role) {
+
+        userRepository.findByEmail(email).ifPresentOrElse(
+
+                existingUser -> {
+
+                    if (!existingUser.getPassword().startsWith("$2a$")
+
+                            && !existingUser.getPassword().startsWith("$2b$")
+
+                            && !existingUser.getPassword().startsWith("$2y$")) {
+
+                        existingUser.setPassword(passwordEncoder.encode("password"));
+
+                        existingUser.setActive(true);
+
+                        existingUser.setRole(role);
+
+                        userRepository.save(existingUser);
+
+                    }
+
+                },
+
+                () -> {
+
+                    User user = new User();
+
+                    user.setName(name);
+
+                    user.setEmail(email);
+
+                    user.setPassword(passwordEncoder.encode("password"));
+
+                    user.setRole(role);
+
+                    user.setActive(true);
+
+                    userRepository.save(user);
+
+                }
+
+        );
+
     }
 }

@@ -217,3 +217,9 @@ L’API refuse maintenant les quantités négatives lors de la création ou de l
 Ce commit ajoute une validation sur la longueur du commentaire d'une tâche.
 
 Le commentaire ne peut pas dépasser 255 caractères, ce qui correspond à la limite définie dans l'entité Task. Cette validation évite les données trop longues et améliore la cohérence entre l'API et la base de données.
+
+## Commit - Seed test users with encoded passwords
+
+Ce commit ajoute des utilisateurs de test créés automatiquement au démarrage de l'application.
+
+Les comptes ADMIN, CHEF et COMMIS sont créés avec un mot de passe encodé avec BCrypt. Cette amélioration facilite les tests de l'authentification JWT et évite les problèmes liés aux anciens mots de passe enregistrés en clair dans la base de données.
