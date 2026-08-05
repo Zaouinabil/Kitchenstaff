@@ -2,14 +2,21 @@ package be.kitchenstaff.config;
 
 import be.kitchenstaff.entity.Category;
 import be.kitchenstaff.entity.Item;
+import be.kitchenstaff.entity.Task;
 import be.kitchenstaff.entity.User;
 import be.kitchenstaff.enums.Role;
+import be.kitchenstaff.enums.TaskPriority;
+import be.kitchenstaff.enums.TaskStatus;
 import be.kitchenstaff.repository.CategoryRepository;
 import be.kitchenstaff.repository.ItemRepository;
+import be.kitchenstaff.repository.TaskRepository;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Component
 public class DataSeeder implements CommandLineRunner {
@@ -17,17 +24,20 @@ public class DataSeeder implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(
             CategoryRepository categoryRepository,
             ItemRepository itemRepository,
             UserRepository userRepository,
+            TaskRepository taskRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -76,6 +86,8 @@ public class DataSeeder implements CommandLineRunner {
                 "commis@kitchenstaff.test",
                 Role.COMMIS
         );
+
+        createDemoTasksIfNotExists();
     }
 
     private Category createCategoryIfNotExists(String name, String description) {
@@ -124,5 +136,82 @@ public class DataSeeder implements CommandLineRunner {
                     userRepository.save(user);
                 }
         );
+    }
+
+    private void createDemoTasksIfNotExists() {
+        LocalDate today = LocalDate.now();
+
+        if (!taskRepository.findByTaskDateOrderByIdDesc(today).isEmpty()) {
+            return;
+        }
+
+        User chef = userRepository.findByEmail("chef@kitchenstaff.test")
+                .orElseThrow();
+
+        User commis = userRepository.findByEmail("commis@kitchenstaff.test")
+                .orElseThrow();
+
+        Item tomates = findItemByName("Tomates rondelles");
+        Item mayonnaise = findItemByName("Mayonnaise");
+        Item oeufs = findItemByName("Œufs cuits");
+
+        createDemoTask(
+                tomates,
+                commis,
+                new BigDecimal("5"),
+                TaskPriority.NORMALE,
+                TaskStatus.A_FAIRE,
+                "Préparer les tomates rondelles pour le salad bar",
+                today
+        );
+
+        createDemoTask(
+                mayonnaise,
+                chef,
+                new BigDecimal("10"),
+                TaskPriority.HAUTE,
+                TaskStatus.EN_COURS,
+                "Préparer la mayonnaise pour le service du midi",
+                today
+        );
+
+        createDemoTask(
+                oeufs,
+                commis,
+                new BigDecimal("30"),
+                TaskPriority.NORMALE,
+                TaskStatus.TERMINEE,
+                "Cuire et écaler les œufs pour les salades",
+                today
+        );
+    }
+
+    private Item findItemByName(String name) {
+        return itemRepository.findAll()
+                .stream()
+                .filter(item -> item.getName().equals(name))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private void createDemoTask(
+            Item item,
+            User assignedUser,
+            BigDecimal quantity,
+            TaskPriority priority,
+            TaskStatus status,
+            String comment,
+            LocalDate taskDate
+    ) {
+        Task task = new Task();
+        task.setItem(item);
+        task.setAssignedUser(assignedUser);
+        task.setQuantity(quantity);
+        task.setPriority(priority);
+        task.setStatus(status);
+        task.setComment(comment);
+        task.setTaskDate(taskDate);
+
+        taskRepository.save(task);
     }
 }

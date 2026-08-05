@@ -1,5 +1,5 @@
 package be.kitchenstaff.service;
-
+import org.springframework.transaction.annotation.Transactional;
 import be.kitchenstaff.dto.CreateTaskRequest;
 import be.kitchenstaff.dto.TaskDto;
 import be.kitchenstaff.dto.UpdateTaskRequest;
@@ -34,7 +34,7 @@ public class TaskService {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
     }
-
+    @Transactional(readOnly = true)
     public List<TaskDto> findAll(
             LocalDate date,
             TaskStatus status,
@@ -81,7 +81,7 @@ public class TaskService {
                 .map(this::toDto)
                 .toList();
     }
-
+    @Transactional(readOnly = true)
     public TaskDto findById(Long id) {
         Task task = getTaskOrThrow(id);
 

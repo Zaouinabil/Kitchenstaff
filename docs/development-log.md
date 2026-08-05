@@ -223,3 +223,15 @@ Le commentaire ne peut pas dépasser 255 caractères, ce qui correspond à la li
 Ce commit ajoute des utilisateurs de test créés automatiquement au démarrage de l'application.
 
 Les comptes ADMIN, CHEF et COMMIS sont créés avec un mot de passe encodé avec BCrypt. Cette amélioration facilite les tests de l'authentification JWT et évite les problèmes liés aux anciens mots de passe enregistrés en clair dans la base de données.
+
+## Commit - Fix seeded users password encoding
+
+Ce commit améliore le DataSeeder afin de créer ou mettre à jour les utilisateurs de test avec un mot de passe encodé avec BCrypt.
+
+Cette correction permet de garantir que les comptes ADMIN, CHEF et COMMIS peuvent toujours être utilisés pour tester l'authentification JWT avec le mot de passe commun `password`.
+
+## Commit - Fix task lazy loading during mapping
+
+Ce commit corrige une erreur LazyInitializationException lors de la récupération des tâches.
+
+Les méthodes de lecture du TaskService utilisent maintenant une transaction en lecture seule afin de permettre le mapping des entités Task vers TaskDto, notamment pour accéder aux informations liées à l'item, la catégorie et l'utilisateur assigné.
