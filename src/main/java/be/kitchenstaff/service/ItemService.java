@@ -1,6 +1,7 @@
 package be.kitchenstaff.service;
 import be.kitchenstaff.dto.UpdateItemRequest;
 import be.kitchenstaff.exception.ResourceAlreadyExistsException;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import be.kitchenstaff.dto.CreateItemRequest;
@@ -25,6 +26,7 @@ public class ItemService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ItemDto> findAll(Long categoryId) {
         List<Item> items;
 
@@ -39,6 +41,7 @@ public class ItemService {
                 .toList();
     }
 
+    @Transactional
     public ItemDto update(Long id, UpdateItemRequest request) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
@@ -55,6 +58,7 @@ public class ItemService {
         return toDto(savedItem);
     }
 
+    @Transactional
     public ItemDto create(CreateItemRequest request) {
 
         if (itemRepository.existsByName(request.getName())) {
@@ -106,6 +110,7 @@ public class ItemService {
         return dto;
     }
 
+    @Transactional
     public ItemDto deactivate(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));
@@ -116,6 +121,7 @@ public class ItemService {
 
         return toDto(savedItem);
     }
+    @Transactional
     public ItemDto reactivate(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Préparation introuvable"));

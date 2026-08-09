@@ -40,7 +40,7 @@ public class SecurityConfig {
 
                         // Catégories et préparations : chef ou admin
                         .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "CHEF")
-                        .requestMatchers("/api/v1/items/**").hasAnyRole("ADMIN", "CHEF")
+                        .requestMatchers("/api/v1/items/**").hasAnyRole("ADMIN", "CHEF", "COMMIS")
 
                         // Dashboard : chef ou admin
                         .requestMatchers("/api/v1/dashboard/**").hasAnyRole("ADMIN", "CHEF")
