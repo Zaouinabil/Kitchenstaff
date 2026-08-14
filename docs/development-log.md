@@ -235,3 +235,26 @@ Cette correction permet de garantir que les comptes ADMIN, CHEF et COMMIS peuven
 Ce commit corrige une erreur LazyInitializationException lors de la récupération des tâches.
 
 Les méthodes de lecture du TaskService utilisent maintenant une transaction en lecture seule afin de permettre le mapping des entités Task vers TaskDto, notamment pour accéder aux informations liées à l'item, la catégorie et l'utilisateur assigné.
+## Commit - Add development troubleshooting notes
+
+Ce commit ajoute une section de notes techniques liées aux problèmes rencontrés pendant le développement.
+
+Problèmes documentés :
+
+- Port 8080 déjà utilisé :
+    - Cause : une ancienne instance du backend Spring Boot était encore lancée.
+    - Solution : identifier le processus avec `lsof -i :8080`, puis l’arrêter avec `kill -9 <PID>`.
+
+- Erreur 403 sur les endpoints protégés :
+    - Cause : le token JWT était valide, mais le rôle utilisateur n’avait pas toujours les autorisations nécessaires.
+    - Solution : tester avec un compte ADMIN ou adapter les règles de sécurité selon le rôle.
+
+- Erreur 500 sur les endpoints tasks/items :
+    - Cause : problème de chargement lazy Hibernate lors du mapping vers les DTO.
+    - Solution : ajouter `@Transactional(readOnly = true)` dans les services concernés.
+
+- Blocage Angular sur "Chargement des tâches..." :
+    - Cause : l’état `loading` ne revenait pas correctement à `false`.
+    - Solution : corriger la logique de chargement et l’affichage conditionnel dans la page Tasks.
+
+Ces corrections améliorent la stabilité de l’application et facilitent les futurs tests avant la présentation du TFE.
