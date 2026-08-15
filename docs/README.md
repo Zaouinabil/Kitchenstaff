@@ -121,3 +121,19 @@ src/main/java/be/kitchenstaff
 ├── exception
 ├── repository
 └── service
+
+---
+. Comptes de test
+ADMIN
+Email : admin@kitchenstaff.test
+Mot de passe : password
+
+CHEF
+Email : chef@kitchenstaff.test
+Mot de passe : password
+
+COMMIS
+Email : commis@kitchenstaff.test
+Mot de passe : password
+
+Port 8080 was already in use , lsof -i :8080 , kill -9 <PID>
