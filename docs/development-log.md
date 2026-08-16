@@ -258,3 +258,28 @@ Problèmes documentés :
     - Solution : corriger la logique de chargement et l’affichage conditionnel dans la page Tasks.
 
 Ces corrections améliorent la stabilité de l’application et facilitent les futurs tests avant la présentation du TFE.
+## Commit - Add frontend feature summary
+
+Ce commit ajoute un résumé des fonctionnalités frontend développées dans l'application Kitchenstaff.
+
+Fonctionnalités frontend réalisées :
+
+- Authentification avec email et mot de passe.
+- Sauvegarde du token JWT dans le localStorage.
+- Affichage de l'utilisateur connecté et de son rôle.
+- Déconnexion de l'utilisateur.
+- Affichage des tâches du jour.
+- Chargement des tâches depuis le backend Spring Boot.
+- Envoi du token JWT dans les requêtes protégées.
+- Filtre par statut : toutes, à faire, en cours, terminées, annulées.
+- Filtre par priorité : basse, normale, haute, urgente.
+- Filtre par date.
+- Recherche dans les tâches.
+- Création d'une nouvelle tâche.
+- Modification d'une tâche existante.
+- Suppression d'une tâche.
+- Actions de statut : démarrer, terminer, annuler.
+- Résumé dashboard avec le nombre de tâches par statut.
+- Contrôles d'affichage selon le rôle utilisateur.
+
+Cette section permet de documenter l'avancement du frontend et de préparer la rédaction du rapport de TFE.
