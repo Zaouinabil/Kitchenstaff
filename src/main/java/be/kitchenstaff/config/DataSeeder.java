@@ -58,16 +58,25 @@ public class DataSeeder implements CommandLineRunner {
                 "Préparations liées aux salades"
         );
 
+        Category fruitsEtCondiments = createCategoryIfNotExists(
+                "Fruits et condiments",
+                "Préparations liées aux fruits et condiments"
+        );
+
         createItemIfNotExists("Tomates rondelles", "kg", legumes);
+        createItemIfNotExists("Tomates au four pour tomate crevette", "kg", legumes);
         createItemIfNotExists("Oignons", "kg", legumes);
         createItemIfNotExists("Choux blanc", "kg", legumes);
         createItemIfNotExists("Choux rouge", "kg", legumes);
         createItemIfNotExists("Carottes râpées", "kg", legumes);
+        createItemIfNotExists("Céleri coupé", "kg", legumes);
         createItemIfNotExists("Œufs cuits", "pièce", salades);
         createItemIfNotExists("Haricots cuits", "kg", salades);
+        createItemIfNotExists("Moules oignon/céleri", "kg", salades);
         createItemIfNotExists("Mayonnaise", "litre", sauces);
         createItemIfNotExists("Sauce tartare", "litre", sauces);
         createItemIfNotExists("Vinaigrette", "litre", sauces);
+        createItemIfNotExists("Citrons", "pièce", fruitsEtCondiments);
 
         createUserIfNotExists(
                 "Admin Kitchenstaff",
@@ -151,12 +160,8 @@ public class DataSeeder implements CommandLineRunner {
         User commis = userRepository.findByEmail("commis@kitchenstaff.test")
                 .orElseThrow();
 
-        Item tomates = findItemByName("Tomates rondelles");
-        Item mayonnaise = findItemByName("Mayonnaise");
-        Item oeufs = findItemByName("Œufs cuits");
-
         createDemoTask(
-                tomates,
+                findItemByName("Tomates rondelles"),
                 commis,
                 new BigDecimal("5"),
                 TaskPriority.NORMALE,
@@ -166,22 +171,112 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         createDemoTask(
-                mayonnaise,
-                chef,
-                new BigDecimal("10"),
+                findItemByName("Oignons"),
+                commis,
+                new BigDecimal("3"),
                 TaskPriority.HAUTE,
                 TaskStatus.EN_COURS,
-                "Préparer la mayonnaise pour le service du midi",
+                "Préparer les oignons pour les moules",
                 today
         );
 
         createDemoTask(
-                oeufs,
+                findItemByName("Choux blanc"),
                 commis,
-                new BigDecimal("30"),
+                new BigDecimal("4"),
+                TaskPriority.NORMALE,
+                TaskStatus.A_FAIRE,
+                "Émincer le chou blanc pour le salad bar",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Choux rouge"),
+                commis,
+                new BigDecimal("4"),
+                TaskPriority.NORMALE,
+                TaskStatus.TERMINEE,
+                "Émincer le chou rouge pour le salad bar",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Carottes râpées"),
+                commis,
+                new BigDecimal("5"),
+                TaskPriority.HAUTE,
+                TaskStatus.EN_COURS,
+                "Râper les carottes pour les salades",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Œufs cuits"),
+                commis,
+                new BigDecimal("40"),
                 TaskPriority.NORMALE,
                 TaskStatus.TERMINEE,
                 "Cuire et écaler les œufs pour les salades",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Mayonnaise"),
+                chef,
+                new BigDecimal("20"),
+                TaskPriority.HAUTE,
+                TaskStatus.EN_COURS,
+                "Préparer la mayonnaise pour le service",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Sauce tartare"),
+                chef,
+                new BigDecimal("5"),
+                TaskPriority.URGENTE,
+                TaskStatus.A_FAIRE,
+                "Préparer la sauce tartare pour le service",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Vinaigrette"),
+                chef,
+                new BigDecimal("5"),
+                TaskPriority.NORMALE,
+                TaskStatus.TERMINEE,
+                "Préparer la vinaigrette pour le salad bar",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Citrons"),
+                commis,
+                new BigDecimal("30"),
+                TaskPriority.HAUTE,
+                TaskStatus.TERMINEE,
+                "Couper les citrons en quartiers pour le service",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Moules oignon/céleri"),
+                commis,
+                new BigDecimal("6"),
+                TaskPriority.URGENTE,
+                TaskStatus.EN_COURS,
+                "Préparer l'oignon et le céleri pour les moules",
+                today
+        );
+
+        createDemoTask(
+                findItemByName("Tomates au four pour tomate crevette"),
+                chef,
+                new BigDecimal("30"),
+                TaskPriority.URGENTE,
+                TaskStatus.A_FAIRE,
+                "Préparer les tomates au four pour les tomates crevettes",
                 today
         );
     }
