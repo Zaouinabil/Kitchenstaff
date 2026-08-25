@@ -4,6 +4,7 @@ import be.kitchenstaff.entity.Task;
 import be.kitchenstaff.enums.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -44,4 +45,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByStatus(TaskStatus status);
 
     List<Task> findByAssignedUserId(Long assignedUserId);
+
+    boolean existsByTaskDateAndItemIdAndAssignedUserIdAndQuantityAndComment(
+            LocalDate taskDate,
+            Long itemId,
+            Long assignedUserId,
+            BigDecimal quantity,
+            String comment
+    );
 }
