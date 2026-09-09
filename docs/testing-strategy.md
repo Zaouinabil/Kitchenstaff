@@ -1,5 +1,7 @@
 # Stratégie de test de Kitchenstaff
 
+Ce document décrit les tests manuels rapportés pendant le développement. Les endpoints et les règles d'accès ont été vérifiés dans le code Spring Boot. Le code Angular n'étant pas présent dans ce dépôt, les scénarios frontend s'appuient sur le [journal de développement](development-log.md) et les informations fournies pour le TFE. Cette vérification documentaire ne constitue pas une nouvelle exécution des tests.
+
 ## 1. Objectif des tests
 
 Les tests réalisés pendant le développement servent à vérifier que les différentes parties de Kitchenstaff fonctionnent correctement ensemble. Ils permettent principalement de contrôler :
@@ -34,13 +36,15 @@ Les principaux endpoints testés sont :
 
 Pour les opérations de création et de modification, les données envoyées dans le corps de la requête sont contrôlées ainsi que le code HTTP et le contenu de la réponse. Pour une suppression, le résultat attendu est une réponse `204 No Content`.
 
+La création doit retourner `201 Created`. Après une création, une modification ou un changement de statut, une nouvelle lecture permet de vérifier les données enregistrées. Les filtres acceptés par `GET /api/v1/tasks` sont `date` (au format `YYYY-MM-DD`), `status`, `assignedUserId` et `categoryId`. Ce contrôleur ne propose pas de paramètre de priorité ou de recherche textuelle.
+
 ## 3. Tests d'authentification
 
 Plusieurs scénarios ont été vérifiés :
 
 - **connexion valide** : une adresse e-mail et un mot de passe corrects doivent retourner un token JWT de type `Bearer` ;
 - **mauvais mot de passe** : l'API doit refuser la connexion avec une réponse `401 Unauthorized` ;
-- **requête sans token** : une route protégée doit refuser la requête, normalement avec une réponse `401 Unauthorized` ;
+- **requête sans token** : une route protégée doit refuser la requête. Le code actuel ne définit pas explicitement de réponse `401` pour ce cas ; il faut relever le code HTTP retourné dans Postman, sans le confondre avec le `401` prévu pour un mauvais mot de passe ;
 - **requête avec Bearer Token** : le token est placé dans le header `Authorization` sous la forme `Bearer <token>` et permet d'accéder aux routes autorisées ;
 - **accès interdit selon le rôle** : un utilisateur connecté qui ne possède pas le rôle nécessaire doit recevoir une réponse `403 Forbidden`.
 
@@ -48,7 +52,7 @@ Ces tests vérifient à la fois la génération du JWT lors du login et son cont
 
 ## 4. Tests du frontend Angular
 
-Le frontend a surtout été vérifié manuellement dans le navigateur. Les scénarios testés sont :
+Les vérifications frontend décrites pour le TFE sont principalement manuelles, dans le navigateur. Les scénarios à rejouer sont :
 
 - la connexion ;
 - la déconnexion ;
@@ -78,7 +82,7 @@ Plusieurs comptes de test, un pour chaque rôle, ont été utilisés pour compar
 
 Les tests ont permis d'identifier et de corriger ou mieux comprendre plusieurs problèmes :
 
-- des erreurs `401 Unauthorized` lorsque le token était absent, invalide, expiré ou mal envoyé ;
+- des erreurs `401 Unauthorized` liées à l'authentification, notamment aux identifiants incorrects ; l'absence, la validité, l'expiration et le format d'envoi du token font aussi partie des points à contrôler en cas de refus d'accès ;
 - des erreurs `403 Forbidden` lorsqu'un compte authentifié ne possédait pas le rôle demandé ;
 - un problème CORS qui empêchait le navigateur d'autoriser certains appels entre Angular et Spring Boot ;
 - une `LazyInitializationException` Hibernate pendant le chargement et la transformation des tâches en DTO ;
@@ -98,6 +102,8 @@ La stratégie actuelle présente encore certaines limites :
 - la couverture par des tests automatisés reste limitée et pourrait être développée dans une future version.
 
 Les tests actuels conviennent pour valider les fonctions principales du TFE, mais ils garantissent moins facilement l'absence de régression qu'une suite automatisée complète.
+
+Le dépôt contient déjà un test JUnit `contextLoads()` avec `@SpringBootTest`, qui vérifie le chargement du contexte Spring. Il ne couvre pas à lui seul les endpoints, les opérations CRUD ou les autorisations. Il n'a pas été exécuté lors de cette mise à jour documentaire.
 
 ## 8. Améliorations futures
 
