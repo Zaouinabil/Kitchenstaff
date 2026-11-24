@@ -1,6 +1,7 @@
 package be.kitchenstaff.controller;
 
 import be.kitchenstaff.dto.CreateUserRequest;
+import be.kitchenstaff.dto.AssignableUserDto;
 import be.kitchenstaff.dto.UpdateUserRoleRequest;
 import be.kitchenstaff.dto.UserDto;
 import be.kitchenstaff.service.UserService;
@@ -29,6 +30,11 @@ public class UserController {
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable Long id) {
         return userService.findById(id);
+    }
+
+    @GetMapping("/assignable")
+    public List<AssignableUserDto> findAssignable() {
+        return userService.findAssignable();
     }
 
     @PostMapping

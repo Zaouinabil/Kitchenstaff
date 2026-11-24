@@ -12,6 +12,8 @@ import be.kitchenstaff.repository.ItemRepository;
 import be.kitchenstaff.repository.TaskRepository;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +26,10 @@ import java.util.Map;
 import java.util.Random;
 
 @Component
+@ConditionalOnProperty(name = "app.demo.seed", havingValue = "true")
 public class DataSeeder implements CommandLineRunner {
-    private static final String DEMO_PASSWORD = "password";
+    @Value("${app.demo.password:}")
+    private String demoPassword;
     private static final int DEMO_TASK_COUNT = 200;
     private static final LocalDate TASK_PERIOD_START = LocalDate.of(2026, 7, 27);
 
@@ -122,6 +126,9 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (demoPassword == null || demoPassword.isBlank()) {
+            throw new IllegalStateException("DEMO_PASSWORD is required when demonstration seeding is enabled");
+        }
         Map<String, Category> categories = seedCategories();
         List<Item> items = seedItems(categories);
         List<User> users = seedUsers();
@@ -169,7 +176,7 @@ public class DataSeeder implements CommandLineRunner {
                 User created = new User();
                 created.setName(seed.name());
                 created.setEmail(seed.email());
-                created.setPassword(passwordEncoder.encode(DEMO_PASSWORD));
+                created.setPassword(passwordEncoder.encode(demoPassword));
                 created.setRole(seed.role());
                 created.setActive(true);
                 return userRepository.save(created);

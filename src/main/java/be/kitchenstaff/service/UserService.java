@@ -1,6 +1,7 @@
 package be.kitchenstaff.service;
 
 import be.kitchenstaff.dto.CreateUserRequest;
+import be.kitchenstaff.dto.AssignableUserDto;
 import be.kitchenstaff.dto.UserDto;
 import be.kitchenstaff.entity.User;
 import be.kitchenstaff.exception.ResourceNotFoundException;
@@ -29,6 +30,12 @@ public class UserService {
         return userRepository.findAll()
                 .stream()
                 .map(this::toDto)
+                .toList();
+    }
+
+    public List<AssignableUserDto> findAssignable() {
+        return userRepository.findByActiveTrueOrderByNameAsc().stream()
+                .map(user -> new AssignableUserDto(user.getId(), user.getName()))
                 .toList();
     }
 

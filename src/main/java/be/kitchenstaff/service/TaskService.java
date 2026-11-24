@@ -13,12 +13,15 @@ import be.kitchenstaff.repository.ItemRepository;
 import be.kitchenstaff.repository.TaskRepository;
 import be.kitchenstaff.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import be.kitchenstaff.exception.ResourceNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -41,41 +44,9 @@ public class TaskService {
             Long assignedUserId,
             Long categoryId
     ) {
-        List<Task> tasks;
-
-        if (date != null && status != null && assignedUserId != null) {
-            tasks = taskRepository.findByTaskDateAndStatusAndAssignedUserId(date, status, assignedUserId);
-
-        } else if (date != null && status != null && categoryId != null) {
-            tasks = taskRepository.findByTaskDateAndStatusAndItemCategoryId(date, status, categoryId);
-
-        } else if (date != null && status != null) {
-            tasks = taskRepository.findByTaskDateAndStatus(date, status);
-
-        } else if (date != null && assignedUserId != null) {
-            tasks = taskRepository.findByTaskDateAndAssignedUserId(date, assignedUserId);
-
-        } else if (date != null && categoryId != null) {
-            tasks = taskRepository.findByTaskDateAndItemCategoryId(date, categoryId);
-
-        } else if (status != null && categoryId != null) {
-            tasks = taskRepository.findByStatusAndItemCategoryId(status, categoryId);
-
-        } else if (status != null) {
-            tasks = taskRepository.findByStatus(status);
-
-        } else if (assignedUserId != null) {
-            tasks = taskRepository.findByAssignedUserId(assignedUserId);
-
-        } else if (categoryId != null) {
-            tasks = taskRepository.findByItemCategoryId(categoryId);
-
-        } else if (date != null) {
-            tasks = taskRepository.findByTaskDateOrderByIdDesc(date);
-
-        } else {
-            tasks = taskRepository.findAllByOrderByIdDesc();
-        }
+        Long commisId = currentCommisId();
+        Long effectiveAssignedUserId = commisId != null ? commisId : assignedUserId;
+        List<Task> tasks = taskRepository.findFiltered(date, status, effectiveAssignedUserId, categoryId);
 
         return tasks.stream()
                 .map(this::toDto)
@@ -184,8 +155,33 @@ public class TaskService {
     }
 
     private Task getTaskOrThrow(Long id) {
-        return taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tâche introuvable"));
+        Long commisId = currentCommisId();
+        if (commisId != null && (task.getAssignedUser() == null
+                || !commisId.equals(task.getAssignedUser().getId()))) {
+            throw new AccessDeniedException("Cette tâche ne vous est pas attribuée");
+        }
+        return task;
+    }
+
+    private Long currentCommisId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Authentification requise");
+        }
+        if (authentication.getAuthorities().stream().anyMatch(authority ->
+                authority.getAuthority().equals("ROLE_ADMIN") || authority.getAuthority().equals("ROLE_CHEF"))) {
+            return null;
+        }
+        if (authentication.getAuthorities().stream().noneMatch(authority ->
+                authority.getAuthority().equals("ROLE_COMMIS"))) {
+            throw new AccessDeniedException("Accès interdit");
+        }
+        return userRepository.findByEmail(authentication.getName())
+                .filter(user -> Boolean.TRUE.equals(user.getActive()))
+                .map(User::getId)
+                .orElseThrow(() -> new AccessDeniedException("Utilisateur actif introuvable"));
     }
 
     private TaskDto toDto(Task task) {

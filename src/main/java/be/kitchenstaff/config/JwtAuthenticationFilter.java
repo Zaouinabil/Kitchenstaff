@@ -48,17 +48,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
-        if (!jwtService.isTokenValid(token)) {
+        var identity = jwtService.validateToken(token);
+        if (identity.isEmpty()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String email = jwtService.extractEmail(token);
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userRepository.findById(identity.get().userId()).orElse(null);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepository.findByEmail(email).orElse(null);
-
-            if (user != null && Boolean.TRUE.equals(user.getActive())) {
+            if (user != null && Boolean.TRUE.equals(user.getActive())
+                    && identity.get().email().equals(user.getEmail())) {
                 SimpleGrantedAuthority authority =
                         new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
 
