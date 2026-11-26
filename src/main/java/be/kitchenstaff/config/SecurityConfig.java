@@ -41,6 +41,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/health").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/stripe/webhook").permitAll()
+                        .requestMatchers("/api/v1/billing/**").hasRole("ADMIN")
 
                         // Liste minimale pour attribuer les tâches, sans accès à l'administration.
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/assignable").hasAnyRole("ADMIN", "CHEF")
