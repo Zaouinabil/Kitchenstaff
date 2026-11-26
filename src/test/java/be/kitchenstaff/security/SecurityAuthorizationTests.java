@@ -77,6 +77,15 @@ class SecurityAuthorizationTests {
 
     @ParameterizedTest
     @CsvSource({
+            "commis, GET, /api/v1/billing/subscription, 403",
+            "commis, POST, /api/v1/billing/checkout, 403",
+            "commis, POST, /api/v1/billing/establishment, 403",
+            "chef, GET, /api/v1/billing/subscription, 403",
+            "chef, POST, /api/v1/billing/checkout, 403",
+            "chef, POST, /api/v1/billing/establishment, 403",
+            "admin, GET, /api/v1/billing/subscription, 200",
+            "admin, POST, /api/v1/billing/checkout, 200",
+            "admin, POST, /api/v1/billing/establishment, 200",
             "commis, GET, /api/v1/tasks, 200",
             "commis, GET, /api/v1/tasks/1, 200",
             "commis, PATCH, /api/v1/tasks/1/start, 200",
@@ -115,6 +124,7 @@ class SecurityAuthorizationTests {
     @Test
     void missingOrInvalidTokensReturnUnauthorized() throws Exception {
         mvc.perform(get("/api/v1/tasks")).andExpect(status().isUnauthorized());
+        mvc.perform(request(HttpMethod.POST, URI.create("/api/v1/billing/checkout"))).andExpect(status().isUnauthorized());
         mvc.perform(get("/api/v1/tasks").header("Authorization", "Bearer invalid"))
                 .andExpect(status().isUnauthorized());
     }
@@ -158,6 +168,7 @@ class SecurityAuthorizationTests {
     @Test
     void loginAndHealthRemainPublic() throws Exception {
         mvc.perform(get("/api/v1/health")).andExpect(status().isOk());
+        mvc.perform(request(HttpMethod.POST, URI.create("/api/v1/stripe/webhook"))).andExpect(status().isOk());
         mvc.perform(request(HttpMethod.POST, URI.create("/api/v1/auth/login")))
                 .andExpect(status().isOk());
     }
