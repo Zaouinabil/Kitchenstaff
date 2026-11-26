@@ -1,0 +1,4 @@
+Test schema: kitchenstaff_billing_test_20261124_5af94008
+Original counts users/items/tasks/categories: 120/100/232/7
+Migration executed on isolated MySQL only. Original data unchanged.
+Maven exit: 0
